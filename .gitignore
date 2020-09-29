@@ -4,6 +4,7 @@ packer/output-hashistack
 terraform.tfstate*
 .terraform
 .minio.sys
+.github
 tmp
 docker/conf/certificates/*.crt
 super-linter.log
