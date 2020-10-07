@@ -1,12 +1,12 @@
-job "dask" {
-  datacenters = ["dc1"]
+job "${prefix}dask" {
+  datacenters = ["${datacenters}"]
   group "scheduler" {
     network {
       mode = "bridge"
     }
 
     service {
-      name = "dask-scheduler"
+      name = "${prefix}dask-scheduler"
       port = "8786"
 
       connect {
@@ -14,7 +14,7 @@ job "dask" {
       }
     }
     service {
-      name = "dask-diag"
+      name = "${prefix}dask-diag"
       port = "8787"
 
       connect {
@@ -25,7 +25,8 @@ job "dask" {
     task "scheduler" {
       driver = "docker"
       config {
-        image = "daskdev/dask"
+        image = "daskdev/dask:2.28.0"
+        command = "dask-scheduler"
       }
     }
   }
@@ -34,15 +35,18 @@ job "dask" {
     network {
       mode ="bridge"
     }
-
+    count = "${workercount}"
+    vault {
+      policies = ["default", "minio_client"]
+    }
     service {
-      name = "dask-worker"
+      name = "${prefix}dask-worker"
 
       connect {
         sidecar_service {
           proxy {
             upstreams {
-              destination_name = "dask-scheduler"
+              destination_name = "${prefix}dask-scheduler"
               local_bind_port = 8786
             }
           }
@@ -51,15 +55,23 @@ job "dask" {
     }
     task "worker" {
       driver = "docker"
-      env {
-        COUNTING_SERVICE_URL = "http://${NOMAD_UPSTREAM_ADDR_count_api}"
-      }
       config {
-        image = "daskdev/dask"
+        image = "daskdev/dask:2.28.0"
         command = "dask-worker"
         args = [
           "tcp://localhost:8786"
         ]
+      }
+      template {
+        data = <<EOH
+{{with secret "${minio_vault_key}"}}
+AWS_ACCESS_KEY_ID="{{.Data.${access_key}}}"
+AWS_SECRET_ACCESS_KEY="{{.Data.${secret_key}}}"
+{{end}}
+EOH
+
+        destination = "secrets/minio.env"
+        env         = true
       }
     }
   }
