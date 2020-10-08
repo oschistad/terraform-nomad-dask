@@ -16,5 +16,8 @@ data "template_file" "dask_job" {
     minio_vault_key = var.minio.vault_key
     access_key = var.minio.access_key
     secret_key = var.minio.secret_key
+    use_minio = var.use_minio
+    minio_service = var.minio.service_name
+    vault_policy = var.vault_policy
   }
 }
