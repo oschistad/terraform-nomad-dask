@@ -36,9 +36,11 @@ job "${prefix}dask" {
       mode ="bridge"
     }
     count = "${workercount}"
+%{ if use_minio }
     vault {
-      policies = ["default", "minio_client"]
+      policies = ["default", "${vault_policy}"]
     }
+%{endif}
     service {
       name = "${prefix}dask-worker"
 
@@ -49,6 +51,12 @@ job "${prefix}dask" {
               destination_name = "${prefix}dask-scheduler"
               local_bind_port = 8786
             }
+%{ if use_minio }
+            upstreams {
+              destination_name = "${minio_service}"
+              local_bind_port = 9000
+            }
+%{endif}
           }
         }
       }
@@ -62,17 +70,19 @@ job "${prefix}dask" {
           "tcp://localhost:8786"
         ]
       }
+%{ if use_minio }
       template {
         data = <<EOH
 {{with secret "${minio_vault_key}"}}
-AWS_ACCESS_KEY_ID="{{.Data.${access_key}}}"
-AWS_SECRET_ACCESS_KEY="{{.Data.${secret_key}}}"
+AWS_ACCESS_KEY_ID="{{.Data.data.${access_key}}}"
+AWS_SECRET_ACCESS_KEY="{{.Data.data.${secret_key}}}"
 {{end}}
+S3_ENDPOINT="127.0.0.1:9000"
 EOH
-
         destination = "secrets/minio.env"
         env         = true
       }
+%{endif}
     }
   }
 }
