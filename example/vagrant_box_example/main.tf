@@ -9,8 +9,8 @@ locals {
   nomad_namespace   = "default"
   nomad_datacenters = ["dc1"]
   vault_minio_creds_path = "secret/"
-  minio_secret_key = "minioYeaaah"
-  minio_access_key = "LoooongAssPassword2342342"
+  minio_secret_key = "minioadmin"
+  minio_access_key = "LoooongPassword2342342"
   minio_vault_path = "secret/minio"
 }
 
@@ -18,10 +18,8 @@ module "dask-fleet" {
   source = "../../."
   prefix = ""
   detach  = false
-//  minio = {
-//    service_name = "minio"
-//    vault_key = local.minio_vault_path
-//  }
+  use_minio = true
+
 }
 
 
