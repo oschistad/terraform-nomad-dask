@@ -5,3 +5,9 @@ variable "nomad_acl" {
 variable "workspace" {
   description = "Foundation 1 workspace (prefix) used"
 }
+
+variable "datacenters" {
+  type = list
+  default = ["blue"]
+}
+
