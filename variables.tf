@@ -13,6 +13,10 @@ variable "workercount" {
   type = number
   default = 3
 }
+variable "use_minio" {
+  type = bool
+  default = false
+}
 
 variable "minio" {
   type = object({
