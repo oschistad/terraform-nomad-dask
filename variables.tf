@@ -6,7 +6,7 @@ variable "prefix" {
 
 variable "detach" {
   default = false
-  description = "Run terraform job detached or wait for success"
+  description = "Run terraform job detached or wait for successful startup"
 }
 
 variable "workercount" {
