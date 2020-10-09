@@ -45,3 +45,8 @@ variable "vault_policy" {
   default = "minio_client"
   description = "Name of policy to issue token from in Nomad job. Needs to have read access to minio.vault_key"
 }
+
+variable "worker_memory" {
+  type = number
+  default = 512
+}

@@ -63,6 +63,9 @@ job "${prefix}dask" {
     }
     task "worker" {
       driver = "docker"
+      resources {
+        memory = "${memorysize}"
+      }
       config {
         image = "daskdev/dask:2.28.0"
         command = "dask-worker"
