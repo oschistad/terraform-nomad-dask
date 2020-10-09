@@ -38,7 +38,7 @@ job "${prefix}dask" {
     count = "${workercount}"
 %{ if use_minio }
     vault {
-      policies = ["default", "${vault_policy}"]
+      policies = ["${vault_policies}"]
     }
 %{endif}
     service {

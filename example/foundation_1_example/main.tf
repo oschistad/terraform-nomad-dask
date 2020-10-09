@@ -17,5 +17,5 @@ module "dask-fleet" {
   }
   use_minio = true
   nomad_datacenters = var.datacenters
-  vault_policy = "${var.workspace}-shared"
+  vault_policies = [ "default", "${var.workspace}-shared" ]
 }
