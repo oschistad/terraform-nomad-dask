@@ -19,4 +19,5 @@ module "dask-fleet" {
   nomad_datacenters = var.datacenters
   vault_policy = "${var.workspace}-shared"
   worker_memory = "32768"
+  vault_policies = [ "default", "${var.workspace}-shared" ]
 }

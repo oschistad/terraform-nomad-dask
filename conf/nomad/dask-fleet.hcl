@@ -38,10 +38,7 @@ job "${prefix}dask" {
     count = "${workercount}"
 %{ if use_minio }
     vault {
-      policies = [
-          "sandbox-blue-shared",
-          "base-server"
-      ]
+      policies = ["${vault_policies}"]
     }
 %{endif}
     service {

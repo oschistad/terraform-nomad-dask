@@ -18,8 +18,8 @@ data "template_file" "dask_job" {
     secret_key = var.minio.secret_key
     use_minio = var.use_minio
     minio_service = var.minio.service_name
-    vault_policy = var.vault_policy
     memorysize = var.worker_memory
     image = var.image
+    vault_policies = join("\",\"",var.vault_policies)
   }
 }
