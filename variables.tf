@@ -6,7 +6,7 @@ variable "prefix" {
 
 variable "detach" {
   default = false
-  description = "Run terraform job detached or wait for success"
+  description = "Run terraform job detached or wait for successful startup"
 }
 
 variable "workercount" {
@@ -16,6 +16,7 @@ variable "workercount" {
 variable "use_minio" {
   type = bool
   default = false
+  description = "Toggle MinIO integration for Dask. Also sets up credentials in local environment on workers if enabled"
 }
 
 variable "minio" {
@@ -44,4 +45,15 @@ variable "vault_policy" {
   type = string
   default = "minio_client"
   description = "Name of policy to issue token from in Nomad job. Needs to have read access to minio.vault_key"
+}
+
+variable "worker_memory" {
+  description = "RAM limit in MB for worker (enforced by Nomad)"
+  type = number
+  default = 512
+}
+
+variable "image" {
+  description = "Container image for dask"
+  default = "daskdev/dask:latest"
 }

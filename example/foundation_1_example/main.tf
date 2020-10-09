@@ -7,7 +7,7 @@ terraform {
 }
 module "dask-fleet" {
   source = "../../."
-  prefix = ""
+  prefix = "${var.workspace}-"
   detach = false
   minio = {
     service_name = "${var.workspace}-minio",
@@ -18,4 +18,5 @@ module "dask-fleet" {
   use_minio = true
   nomad_datacenters = var.datacenters
   vault_policy = "${var.workspace}-shared"
+  worker_memory = "32768"
 }
