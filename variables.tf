@@ -40,11 +40,12 @@ variable "nomad_datacenters" {
   description = "Nomad data centers"
   default     = ["dc1"]
 }
-
-variable "vault_policy" {
-  type = string
-  default = "minio_client"
-  description = "Name of policy to issue token from in Nomad job. Needs to have read access to minio.vault_key"
+variable "vault_policies" {
+  default = [
+    "base-server",
+    "default"
+  ]
+  description = "List of policies to issue token from in Nomad job. Needs to have read access to minio.vault_key"
 }
 
 variable "worker_memory" {
