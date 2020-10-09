@@ -7,7 +7,7 @@ terraform {
 }
 module "dask-fleet" {
   source = "../../."
-  prefix = ""
+  prefix = "${var.workspace}-"
   detach = false
   minio = {
     service_name = "${var.workspace}-minio",
