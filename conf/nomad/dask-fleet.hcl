@@ -25,7 +25,7 @@ job "${prefix}dask" {
     task "scheduler" {
       driver = "docker"
       config {
-        image = "daskdev/dask:2.28.0"
+        image = "${image}"
         command = "dask-scheduler"
       }
     }
@@ -38,7 +38,10 @@ job "${prefix}dask" {
     count = "${workercount}"
 %{ if use_minio }
     vault {
-      policies = ["default", "${vault_policy}"]
+      policies = [
+          "sandbox-blue-shared",
+          "base-server"
+      ]
     }
 %{endif}
     service {
@@ -67,7 +70,7 @@ job "${prefix}dask" {
         memory = "${memorysize}"
       }
       config {
-        image = "daskdev/dask:2.28.0"
+        image = "${image}"
         command = "dask-worker"
         args = [
           "tcp://localhost:8786"

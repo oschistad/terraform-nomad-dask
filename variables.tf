@@ -16,6 +16,7 @@ variable "workercount" {
 variable "use_minio" {
   type = bool
   default = false
+  description = "Toggle MinIO integration for Dask. Also sets up credentials in local environment on workers if enabled"
 }
 
 variable "minio" {
@@ -47,6 +48,12 @@ variable "vault_policy" {
 }
 
 variable "worker_memory" {
+  description = "RAM limit in MB for worker (enforced by Nomad)"
   type = number
   default = 512
+}
+
+variable "image" {
+  description = "Container image for dask"
+  default = "daskdev/dask:latest"
 }

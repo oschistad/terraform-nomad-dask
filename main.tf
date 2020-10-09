@@ -20,5 +20,6 @@ data "template_file" "dask_job" {
     minio_service = var.minio.service_name
     vault_policy = var.vault_policy
     memorysize = var.worker_memory
+    image = var.image
   }
 }
