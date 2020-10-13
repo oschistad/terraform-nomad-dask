@@ -4,7 +4,7 @@ job "${prefix}dask" {
     network {
       mode = "bridge"
     }
-%{ if zone != null}
+%{ if zone != ""}
     constraint {
       attribute = "$${meta.zone}"
       value = "${zone}"
@@ -57,7 +57,7 @@ job "${prefix}dask" {
       mode ="bridge"
     }
     count = 1
-%{ if zone != null}
+%{ if zone != ""}
     constraint {
       attribute = "$${meta.zone}"
       value = "${zone}"
@@ -131,7 +131,7 @@ EOH
       mode ="bridge"
     }
     count = 1
-%{ if zone != null}
+%{ if zone != ""}
     constraint {
       attribute = "$${meta.zone}"
       value = "${zone}"
@@ -205,7 +205,7 @@ EOH
       mode ="bridge"
     }
     count = 1
-%{ if zone != null}
+%{ if zone != ""}
     constraint {
       attribute = "$${meta.zone}"
       value = "${zone}"
