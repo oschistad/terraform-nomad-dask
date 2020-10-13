@@ -15,9 +15,8 @@ module "dask-fleet" {
     access_key = "accesskey",
     secret_key = "secretkey"
   }
-  use_minio = true
+  use_minio = false
   nomad_datacenters = var.datacenters
-  vault_policy = "${var.workspace}-shared"
-  worker_memory = "32768"
+  worker_memory = "8192"
   vault_policies = [ "default", "${var.workspace}-shared" ]
 }
