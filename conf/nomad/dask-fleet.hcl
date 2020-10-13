@@ -4,10 +4,12 @@ job "${prefix}dask" {
     network {
       mode = "bridge"
     }
+%{ if zone != null}
     constraint {
       attribute = "$${meta.zone}"
-      value = "dataplatform"
+      value = "${zone}"
     }
+%{ endif }
     service {
       name = "${prefix}dask-scheduler"
       port = "8786"
@@ -55,10 +57,12 @@ job "${prefix}dask" {
       mode ="bridge"
     }
     count = 1
+%{ if zone != null}
     constraint {
       attribute = "$${meta.zone}"
-      value = "dataplatform"
+      value = "${zone}"
     }
+%{ endif }
 %{ if use_minio }
     vault {
       policies = ["${vault_policies}"]
@@ -127,10 +131,12 @@ EOH
       mode ="bridge"
     }
     count = 1
+%{ if zone != null}
     constraint {
       attribute = "$${meta.zone}"
-      value = "dataplatform"
+      value = "${zone}"
     }
+%{ endif }
 %{ if use_minio }
     vault {
       policies = ["${vault_policies}"]
@@ -199,10 +205,12 @@ EOH
       mode ="bridge"
     }
     count = 1
+%{ if zone != null}
     constraint {
       attribute = "$${meta.zone}"
-      value = "dataplatform"
+      value = "${zone}"
     }
+%{ endif }
 %{ if use_minio }
     vault {
       policies = ["${vault_policies}"]

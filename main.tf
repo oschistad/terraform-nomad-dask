@@ -21,5 +21,6 @@ data "template_file" "dask_job" {
     memorysize = var.worker_memory
     image = var.image
     vault_policies = join("\",\"",var.vault_policies)
+    zone = var.zone
   }
 }
