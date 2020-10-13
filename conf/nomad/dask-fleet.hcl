@@ -310,13 +310,21 @@ EOH
         }
       }
     }
-
+%{ if use_minio }
+    vault {
+      policies = ["${vault_policies}"]
+    }
+%{endif}
     task "notebook" {
       driver = "docker"
+      resources {
+        memory = "${notebook_memorysize}"
+      }
       config {
         image = "${notebook_image}"
         command = "dask-scheduler"
       }
+
 %{ if use_minio }
       template {
         data = <<EOH
