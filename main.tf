@@ -22,5 +22,6 @@ data "template_file" "dask_job" {
     image = var.image
     vault_policies = join("\",\"",var.vault_policies)
     zone = var.zone
+    notebook_image = var.notebook_image
   }
 }
