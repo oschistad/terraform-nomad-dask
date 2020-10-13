@@ -58,3 +58,8 @@ variable "image" {
   description = "Container image for dask"
   default = "daskdev/dask:latest"
 }
+
+variable "zone" {
+  default = ""
+  description = "Network zone meta for contstraint tag. Requires a nomad server with same tag"
+}
