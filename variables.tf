@@ -64,6 +64,12 @@ variable "notebook_image" {
   default = "daskdev/dask-notebook:latest"
 }
 
+variable "notebook_memory" {
+  description = "RAM limit in MB for worker (enforced by Nomad)"
+  type = number
+  default = 512
+}
+
 variable "zone" {
   default = ""
   description = "Network zone meta for contstraint tag. Requires a nomad server with same tag"
