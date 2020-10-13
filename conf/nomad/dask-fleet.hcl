@@ -273,4 +273,70 @@ EOH
 %{endif}
     }
   }
+  group "notebook" {
+    network {
+      mode = "bridge"
+    }
+%{ if zone != ""}
+    constraint {
+      attribute = "$${meta.zone}"
+      value = "${zone}"
+    }
+%{ endif }
+    service {
+      name = "${prefix}dask-notebook"
+      port = "8888"
+
+      connect {
+        sidecar_service {
+          proxy {
+            upstreams {
+              destination_name = "${prefix}dask-scheduler"
+              local_bind_port = 8786
+            }
+            upstreams {
+              destination_name = "${prefix}dask-worker1"
+              local_bind_port = 8791
+            }
+            upstreams {
+              destination_name = "${prefix}dask-worker2"
+              local_bind_port = 8792
+            }
+            upstreams {
+              destination_name = "${prefix}dask-worker3"
+              local_bind_port = 8793
+            }
+          }
+        }
+      }
+    }
+
+    task "notebook" {
+      driver = "docker"
+      config {
+        image = "${notebook_image}"
+        command = "dask-scheduler"
+      }
+%{ if use_minio }
+      template {
+        data = <<EOH
+{{with secret "${minio_vault_key}"}}
+AWS_ACCESS_KEY_ID="{{.Data.data.${access_key}}}"
+AWS_SECRET_ACCESS_KEY="{{.Data.data.${secret_key}}}"
+{{end}}
+S3_ENDPOINT="127.0.0.1:9000"
+EOH
+        destination = "secrets/minio.env"
+        env         = true
+      }
+%{endif}
+      template {
+        data = <<EOH
+DASK_SCHEDULER_ADDRESS="tcp://localhost:8786"
+EOH
+        destination = "local/scheduler.env"
+        env         = true
+      }
+    }
+  }
 }
